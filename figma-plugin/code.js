@@ -1,4 +1,4 @@
-﻿// Figma plugin: NurseShift – obrazovky ve stejném vzhledu jako aplikace (Tailwind slate/blue/indigo).
+// Figma plugin: NurseShift – obrazovky ve stejném vzhledu jako aplikace (Tailwind slate/blue/indigo).
 function hex(h) { return { r: parseInt(h.slice(1, 3), 16) / 255, g: parseInt(h.slice(3, 5), 16) / 255, b: parseInt(h.slice(5, 7), 16) / 255 }; }
 const K = {
   s50: '#f8fafc', s100: '#f1f5f9', s200: '#e2e8f0', s300: '#cbd5e1', s400: '#94a3b8', s500: '#64748b', s600: '#475569',
@@ -7,6 +7,7 @@ const K = {
   emerald600: '#059669', indigo600: '#4f46e5', red50: '#fef2f2', red100: '#fee2e2', red700: '#b91c1c', indigo50: '#eef2ff', sky400: '#38bdf8',
 };
 const W = 1480, GAP = 200;
+const TABS_HEAD = ['Plánovací matice směn', 'Preference sester', 'Výměny směn', 'Nastavení oddělení & Uživatelé'];
 
 function box(p, x, y, w, h, fill, o) {
   o = o || {};
@@ -34,9 +35,10 @@ function btn(p, label, x, y, w, fill, color, stroke) {
   box(p, x, y, w, 30, fill, { r: 8, stroke: stroke });
   txt(p, label, x, y + 8, { w: w, align: 'CENTER', size: 12, semi: true, color: color || K.white });
 }
-function frame(name, idx, h) {
+let CUR = 0;
+function frame(name, h) {
   const f = figma.createFrame();
-  f.name = name; f.x = 0; f.y = idx * (h + GAP); f.resize(W, h);
+  f.name = name; f.x = 0; f.y = CUR; f.resize(W, h); CUR += h + GAP;
   f.fills = [{ type: 'SOLID', color: hex(K.s100) }];
   f.clipsContent = true;
   figma.currentPage.appendChild(f);
@@ -140,8 +142,26 @@ async function main() {
   await figma.loadFontAsync({ family: 'Inter', style: 'Bold' });
   const out = [];
 
-  // 1. Plánovací matice – vrchní sestra
-  let f = frame('1. Plánovací matice směn (Vrchní sestra)', 0, 880);
+  // 1. Přihlášení
+  let f = frame('1. Přihlášení', 760);
+  box(f, 0, 0, W, 760, K.s900);
+  box(f, 540, 150, 400, 460, K.white, { r: 16 });
+  box(f, 710, 180, 60, 60, K.blue600, { r: 16 });
+  txt(f, '♥', 710, 192, { w: 60, align: 'CENTER', size: 30, bold: true, color: K.white });
+  txt(f, 'NurseShift', 540, 256, { w: 400, align: 'CENTER', size: 24, bold: true });
+  txt(f, 'Plánování směn zdravotních sester', 540, 290, { w: 400, align: 'CENTER', size: 12, color: K.s500 });
+  box(f, 580, 340, 320, 48, K.s800, { r: 10 });
+  txt(f, 'Přihlásit se přes Microsoft', 580, 356, { w: 320, align: 'CENTER', size: 14, semi: true, color: K.white });
+  box(f, 580, 410, 320, 1, K.s200);
+  txt(f, 'nebo', 580, 418, { w: 320, align: 'CENTER', size: 11, color: K.s400 });
+  txt(f, 'Vývojový režim – testovací účet', 580, 446, { size: 11, semi: true, color: K.s700 });
+  box(f, 580, 466, 320, 34, K.white, { r: 8, stroke: K.s300 });
+  txt(f, 'Bc. Jana Nováková — [Sestra]  ▾', 592, 476, { size: 12 });
+  btn(f, 'Přihlásit', 580, 520, 320, K.indigo600);
+  txt(f, 'Přihlášení přes Microsoft Entra ID nemocnice', 540, 574, { w: 400, align: 'CENTER', size: 10, color: K.s400 });
+  out.push(f);
+  // 2. Plánovací matice – vrchní sestra
+  f = frame('2. Plánovací matice směn (Vrchní sestra)', 880);
   header(f, 'Mgr. Eva Dvořáková — [Vrchní sestra] (eva.dvorakova@nemocnice.cz)', ['Plánovací matice směn', 'Preference sester', 'Výměny směn', 'Nastavení oddělení & Uživatelé'], 0);
   card(f, 24, 124, 1424, 60);
   box(f, 40, 140, 250, 28, K.s100, { r: 8 });
@@ -156,15 +176,62 @@ async function main() {
   out.push(f);
 
   // 2. Pohled sestry
-  f = frame('2. Pohled sestry (jen čtení)', 1, 700);
+  f = frame('3. Pohled sestry (jen čtení)', 700);
   header(f, 'Bc. Jana Nováková — [Sestra] (jana.novakova@nemocnice.cz)', ['Plánovací matice směn', 'Moje preference a dovolená', 'Výměny směn'], 0);
   box(f, 24, 124, 1424, 40, K.blue100, { r: 12, stroke: '#bfdbfe' });
   txt(f, '🔒  Rozpis je pouze ke čtení. Vlastní řádek je zvýrazněn.', 44, 136, { size: 12, color: '#1e3a8a' });
   matrix(f, 184, 'Bc. Jana Nováková');
   out.push(f);
 
-  // 3. Nastavení oddělení & uživatelé
-  f = frame('3. Nastavení oddělení & Uživatelé (Admin)', 2, 760);
+  // 4. Preference sester
+  f = frame('4. Preference sester a dovolená', 760);
+  header(f, 'Mgr. Eva Dvořáková — [Vrchní sestra] (eva.dvorakova@nemocnice.cz)', TABS_HEAD, 1);
+  card(f, 24, 124, 1424, 80);
+  txt(f, 'Preference sester', 44, 140, { size: 18, bold: true });
+  txt(f, 'Požadavky na směny a dovolenou na měsíc 2026-11', 44, 168, { size: 12, color: K.s500 });
+  txt(f, 'Sestra:', 1020, 148, { size: 11, semi: true, color: K.s600 });
+  box(f, 1070, 140, 360, 32, K.white, { r: 8, stroke: K.s300 });
+  txt(f, 'Bc. Jana Nováková', 1082, 149, { size: 12 });
+  card(f, 24, 224, 700, 300);
+  txt(f, 'Kalendář požadavků', 44, 240, { size: 14, bold: true });
+  [['Nemůže (✕)', K.red100, K.red700], ['Chci denní (d)', K.blue100, K.blue800], ['Chci noční (n)', '#e0e7ff', '#3730a3'], ['Dovolená (dov)', K.emerald100, K.emerald800]].forEach(function (o, i) {
+    box(f, 44 + i * 160, 274, 148, 28, o[1], { r: 8 }); txt(f, o[0], 44 + i * 160, 281, { w: 148, align: 'CENTER', size: 11, bold: true, color: o[2] });
+  });
+  for (let d = 0; d < 30; d++) {
+    const cx = 44 + (d % 10) * 66, cy = 322 + Math.floor(d / 10) * 62;
+    const sp = { 4: ['✕', K.red100, K.red700], 11: ['d', K.blue100, K.blue800], 17: ['dov', K.emerald100, K.emerald800], 18: ['dov', K.emerald100, K.emerald800] }[d];
+    box(f, cx, cy, 58, 54, sp ? sp[1] : K.white, { r: 8, stroke: K.s200 });
+    txt(f, String(d + 1), cx + 6, cy + 5, { size: 10, color: K.s500 });
+    if (sp) txt(f, sp[0], cx, cy + 24, { w: 58, align: 'CENTER', size: 13, bold: true, color: sp[2] });
+  }
+  card(f, 748, 224, 700, 300);
+  txt(f, 'Poznámka k měsíci', 768, 240, { size: 14, bold: true });
+  box(f, 768, 272, 660, 140, K.white, { r: 8, stroke: K.s300 });
+  txt(f, '5.11. mám odborného lékaře, 18.–19.11. plánovaná dovolená', 780, 284, { size: 12, color: K.s600 });
+  btn(f, 'Uložit preference', 768, 430, 160, K.indigo600);
+  out.push(f);
+
+  // 5. Výměny směn
+  f = frame('5. Výměny směn', 760);
+  header(f, 'Mgr. Eva Dvořáková — [Vrchní sestra] (eva.dvorakova@nemocnice.cz)', TABS_HEAD, 2);
+  card(f, 24, 124, 520, 420);
+  txt(f, 'Nová žádost o výměnu směny (2026-11)', 44, 142, { size: 14, bold: true });
+  [['Žadatelka', 'Bc. Jana Nováková'], ['Moje směna', '1. 11. – Denní (D)'], ['S kým', 'Bc. Veronika Králová'], ['Směna kolegyně', '3. 11. – Noční (N)']].forEach(function (p, i) {
+    txt(f, p[0], 44, 184 + i * 62, { size: 12, semi: true, color: K.s700 });
+    box(f, 44, 204 + i * 62, 480, 32, K.white, { r: 8, stroke: K.s300 });
+    txt(f, p[1] + '   ▾', 56, 213 + i * 62, { size: 12 });
+  });
+  btn(f, 'Odeslat žádost o výměnu', 44, 444, 220, K.indigo600);
+  card(f, 568, 124, 880, 420);
+  txt(f, 'Přehled žádostí o výměnu směn (1)', 588, 142, { size: 14, bold: true });
+  box(f, 588, 184, 840, 110, K.s50, { r: 10, stroke: K.s200 });
+  txt(f, 'Bc. Jana Nováková  ⇄  Bc. Veronika Králová', 604, 198, { size: 13, bold: true });
+  txt(f, '1. 11. (D)  ↔  3. 11. (N)', 604, 222, { size: 12, color: K.s600 });
+  box(f, 604, 250, 150, 22, K.amber100, { r: 11 }); txt(f, 'Čeká na vrchní sestru', 604, 255, { w: 150, align: 'CENTER', size: 10, bold: true, color: K.amber800 });
+  btn(f, 'Schválit', 1210, 220, 100, K.emerald600); btn(f, 'Zamítnout', 1320, 220, 100, K.white, K.red700, '#fecaca');
+  out.push(f);
+  // 6. Nastavení oddělení & uživatelé
+  f = frame('6. Nastavení oddělení & Uživatelé (Admin)', 760);
   header(f, 'Ing. Martin Svoboda — [Admin] (martin.svoboda@nemocnice.cz)', ['Plánovací matice směn', 'Preference sester', 'Výměny směn', 'Nastavení oddělení & Uživatelé'], 3);
   card(f, 24, 124, 460, 380);
   txt(f, 'Nastavení oddělení', 44, 142, { size: 16, bold: true });
@@ -194,6 +261,6 @@ async function main() {
 
   figma.currentPage.selection = out;
   figma.viewport.scrollAndZoomIntoView(out);
-  figma.closePlugin('NurseShift: vytvořeny 3 obrazovky.');
+  figma.closePlugin('NurseShift: vytvořeno 6 obrazovek.');
 }
 main().catch(function (e) { figma.closePlugin('Chyba: ' + e.message); });
