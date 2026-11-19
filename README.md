@@ -20,3 +20,4 @@ Bez Dockeru (Windows): `./start_local.ps1` (použije lokální fallback úloži�
 - [x] Nastavení oddělení: `GET/PUT /api/settings` (PUT admin / vrchní sestra)
 - [x] Ukládání a načítání měsíčního rozpisu: `GET/PUT /api/schedules/{YYYY-MM}`
 - Přihlášení v dev režimu: hlavička `X-Dev-User-Id` (např. `user_admin`, `user_head`, `user_1`) nebo `POST /api/auth/dev-login`.
+- Testy: `cd backend; pip install -r requirements.txt; pytest` (5 testů: seed, CRUD uživatelů, nastavení, rozpis)
