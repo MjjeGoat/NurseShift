@@ -1,0 +1,7 @@
+{
+  "name": "NurseShift n?vrh obrazovek",
+  "id": "nurseshift-screens-local",
+  "api": "1.0.0",
+  "main": "code.js",
+  "editorType": ["figma"]
+}
