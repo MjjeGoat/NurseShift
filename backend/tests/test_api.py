@@ -1,4 +1,4 @@
-﻿import os
+import os
 
 os.environ["FIRESTORE_EMULATOR_HOST"] = "localhost:1"
 

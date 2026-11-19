@@ -1,4 +1,4 @@
-﻿# NurseShift – stav k 1. kontrole (kroky 1–3)
+# NurseShift – stav k 1. kontrole (kroky 1–3)
 
 Systém pro plánování 12h směn sester. Tato složka obsahuje pouze to, co plán projektu požaduje k 1. kontrole.
 

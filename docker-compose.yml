@@ -17,7 +17,7 @@ services:
       dockerfile: Dockerfile
     container_name: nurseshift-backend
     ports:
-      - "8000:8000"
+      - "8001:8000"
     environment:
       - GOOGLE_CLOUD_PROJECT=nurseshift-local
       - FIRESTORE_EMULATOR_HOST=firestore-emulator:8080
@@ -40,7 +40,7 @@ services:
     ports:
       - "5173:5173"
     environment:
-      - VITE_API_URL=http://localhost:8000
+      - VITE_API_URL=http://localhost:8001
       - VITE_AZURE_CLIENT_ID=${AZURE_CLIENT_ID:-hospital-client-id}
       - VITE_AZURE_TENANT_ID=${AZURE_TENANT_ID:-hospital-tenant-id}
     volumes:
@@ -48,3 +48,4 @@ services:
       - /app/node_modules
     depends_on:
       - backend
+

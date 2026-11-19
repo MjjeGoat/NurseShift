@@ -1,4 +1,4 @@
-﻿# Návrh obrazovek (wireframy)
+# Návrh obrazovek (wireframy)
 
 ## 1. Přihlášení
 Tlačítko „Přihlásit přes Microsoft“ (Entra ID). V dev režimu výběr testovacího účtu.
