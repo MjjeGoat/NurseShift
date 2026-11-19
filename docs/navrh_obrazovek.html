@@ -1,0 +1,49 @@
+﻿<!doctype html><html lang="cs"><head><meta charset="utf-8"><title>NurseShift – návrh obrazovek</title>
+<style>
+body{font-family:Segoe UI,Arial,sans-serif;background:#eef1f5;margin:0;padding:24px;color:#1f2937}
+h1{margin:0 0 4px}h2{margin:32px 0 8px}.sub{color:#6b7280}
+.screen{background:#fff;border:1px solid #cbd5e1;border-radius:10px;padding:20px;max-width:900px;box-shadow:0 2px 8px #0001}
+.bar{display:flex;gap:10px;align-items:center;margin-bottom:14px}
+.btn{background:#2563eb;color:#fff;padding:7px 14px;border-radius:6px;font-size:14px}.btn.g{background:#e5e7eb;color:#111}
+.btn.ms{background:#2f2f2f;padding:12px 22px;font-size:16px}
+table{border-collapse:collapse;width:100%}td,th{border:1px solid #e5e7eb;padding:6px;text-align:center;font-size:13px}
+td.nm{text-align:left;white-space:nowrap}td.d{background:#fef3c7}td.n{background:#c7d2fe}td.v{background:#f3f4f6;color:#9ca3af}
+.warn{background:#fee2e2}.ok{background:#dcfce7}
+label{display:block;margin:10px 0 3px;font-size:13px;color:#374151}.in{border:1px solid #cbd5e1;border-radius:6px;padding:7px;width:260px;background:#f9fafb}
+.legend span{display:inline-block;padding:2px 10px;margin-right:6px;border-radius:4px;font-size:12px}
+</style></head><body>
+<h1>NurseShift – návrh obrazovek</h1><div class="sub">Wireframy pro krok 1 (React + Tailwind). Role: Admin, Vrchní sestra, Sestra.</div>
+
+<h2>1. Přihlášení</h2><div class="screen" style="text-align:center;max-width:420px">
+<h3>NurseShift</h3><p class="sub">Plánování 12h směn</p><div class="btn ms">Přihlásit přes Microsoft</div>
+<p class="sub" style="font-size:12px">Dev režim: výběr testovacího účtu</p></div>
+
+<h2>2. Měsíční rozpis (Vrchní sestra / Admin)</h2><div class="screen">
+<div class="bar"><span class="btn g">&lt; říjen</span><b>LISTOPAD 2026</b><span class="btn g">prosinec &gt;</span>
+<span style="margin-left:auto">Stav: <span class="btn g">Koncept ▾</span></span><span class="btn">Uložit</span></div>
+<table><tr><th>Sestra / úvazek</th><th>Po 1</th><th>Út 2</th><th>St 3</th><th>Čt 4</th><th>Pá 5</th><th>So 6</th><th>Ne 7</th></tr>
+<tr><td class='nm'>Nováková <small>1.0</small></td><td class='d'>D</td><td class='d'>D</td><td class='v'>V</td><td class='n'>N</td><td class='n'>N</td><td class='v'>V</td><td class='d'>D</td></tr>
+<tr><td class='nm'>Černá <small>1.0</small></td><td class='d'>D</td><td class='d'>D</td><td class='v'>V</td><td class='v'>V</td><td class='n'>N</td><td class='n'>N</td><td class='v'>V</td></tr>
+<tr><td class='nm'>Procházková <small>1.0</small></td><td class='v'>V</td><td class='n'>N</td><td class='n'>N</td><td class='v'>V</td><td class='d'>D</td><td class='d'>D</td><td class='d'>D</td></tr>
+<tr><td class='nm'>Veselá <small>1.0</small></td><td class='n'>N</td><td class='v'>V</td><td class='d'>D</td><td class='d'>D</td><td class='v'>V</td><td class='n'>N</td><td class='n'>N</td></tr>
+<tr><td class='nm'>Horáková <small>1.0</small></td><td class='v'>V</td><td class='d'>D</td><td class='d'>D</td><td class='n'>N</td><td class='v'>V</td><td class='d'>D</td><td class='v'>V</td></tr>
+
+<tr><td class="nm"><b>Obsazenost D/N</b></td><td class="ok">3/2</td><td class="ok">3/2</td><td class="warn">2/2</td><td class="ok">3/2</td><td class="warn">3/1</td><td class="ok">3/2</td><td class="ok">3/2</td></tr></table>
+<p class="legend"><span style="background:#fef3c7">D denní</span><span style="background:#c7d2fe">N noční</span><span style="background:#f3f4f6">V volno</span><span style="background:#fee2e2">nedostatečná obsazenost</span></p>
+<p class="sub">Klik na buňku přepíná D → N → DOV → V.</p></div>
+
+<h2>3. Pohled sestry (jen čtení)</h2><div class="screen"><div class="bar"><b>Můj rozpis – listopad 2026</b></div>
+<table><tr><th></th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr><tr><td class="nm"><b>Bc. Jana Nováková</b></td><td class="d">D</td><td class="d">D</td><td class="v">V</td><td class="n">N</td><td class="n">N</td></tr>
+<tr><td class="nm">Ostatní sestry…</td><td colspan=5 class="v">zobrazeno šedě</td></tr></table></div>
+
+<h2>4. Správa uživatelů (Admin)</h2><div class="screen"><div class="bar"><b>Uživatelé</b><span class="btn" style="margin-left:auto">+ Přidat</span></div>
+<table><tr><th>Jméno</th><th>E-mail</th><th>Role</th><th>Úvazek</th><th>Aktivní</th><th></th></tr>
+<tr><td>Bc. Jana Nováková</td><td>jana.novakova@nemocnice.cz</td><td>sestra</td><td>1.0</td><td>✔</td><td>Upravit | Smazat</td></tr>
+<tr><td>Markéta Benešová</td><td>marketa.benesova@nemocnice.cz</td><td>sestra</td><td>0.75</td><td>✔</td><td>Upravit | Smazat</td></tr>
+<tr><td>Mgr. Eva Dvořáková</td><td>eva.dvorakova@nemocnice.cz</td><td>vrchní sestra</td><td>1.0</td><td>✔</td><td>Upravit | Smazat</td></tr></table></div>
+
+<h2>5. Nastavení oddělení</h2><div class="screen"><div class="bar"><b>Nastavení oddělení</b></div>
+<label>Délka směny (h)</label><div class="in">12</div><label>Min. obsazenost – den</label><div class="in">3</div>
+<label>Min. obsazenost – noc</label><div class="in">2</div><label>Týdenní fond (plný úvazek, h)</label><div class="in">37,5</div>
+<label>Pravidla</label><div>☑ Zákaz noc → den &nbsp; Max. po sobě jdoucích směn: 3</div><br><span class="btn">Uložit</span></div>
+</body></html>
