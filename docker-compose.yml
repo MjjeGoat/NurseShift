@@ -1,0 +1,50 @@
+services:
+  firestore-emulator:
+    image: gcr.io/google.com/cloudsdktool/google-cloud-cli:emulators
+    container_name: nurseshift-firestore
+    command: gcloud emulators firestore start --host-port=0.0.0.0:8080
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: nurseshift-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - GOOGLE_CLOUD_PROJECT=nurseshift-local
+      - FIRESTORE_EMULATOR_HOST=firestore-emulator:8080
+      - AUTO_SEED=true
+      - AUTH_DEV_MODE=true
+      - AZURE_TENANT_ID=${AZURE_TENANT_ID:-hospital-tenant-id}
+      - AZURE_CLIENT_ID=${AZURE_CLIENT_ID:-hospital-client-id}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-nurseshift-dev-secret-key-change-in-prod}
+    volumes:
+      - ./backend:/app
+    depends_on:
+      firestore-emulator:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: nurseshift-frontend
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:8000
+      - VITE_AZURE_CLIENT_ID=${AZURE_CLIENT_ID:-hospital-client-id}
+      - VITE_AZURE_TENANT_ID=${AZURE_TENANT_ID:-hospital-tenant-id}
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
